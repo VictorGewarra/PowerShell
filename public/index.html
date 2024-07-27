@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Executor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/powershell/powershell.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var editor = CodeMirror.fromTextArea(document.getElementById('command'), {
+                mode: 'powershell',
+                lineNumbers: true,
+                theme: 'default',
+                matchBrackets: true
+            });
+			async function submitCode() {
+				<!-- const code = document.getElementById('code').value;
+				const code = editor.getValue();
+				const response = await fetch('/submit-code', {
+					method: 'POST',
+					headers: { 'Content-Type': 'text/plain' },
+					body: code
+				});
+				const result = await response.text();
+				alert(result);
+			}
+
+            async function executeCommand() {
+                const code = editor.getValue();
+				console.log(`Sending command: ${code}`);
+				const response = await fetch('/execute', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ command: code }) // Отправляем команду как "command"
+			});
+                const result = await response.text();
+                console.log(`Command result: ${result}`);
+                const outputElement = document.getElementById('output');
+                outputElement.textContent = result;
+                outputElement.className = 'language-powershell';
+                Prism.highlightElement(outputElement);
+            }
+
+            async function runPesterTests() {
+                const testFileName = document.getElementById('test-file-name').value;
+                console.log(`Running tests from file: ${testFileName}`);
+                const response = await fetch('/run-tests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ testFileName })
+                });
+                const result = await response.text();
+                console.log(`Pester tests result: ${result}`);
+                const outputElement = document.getElementById('output');
+                outputElement.textContent = result;
+                outputElement.className = 'language-powershell';
+                Prism.highlightElement(outputElement);
+            }
+
+            document.getElementById('execute-button').addEventListener('click', executeCommand);
+            document.getElementById('run-tests-button').addEventListener('click', runPesterTests);
+			document.getElementById('submit-button').addEventListener('click', submitCode);
+        });
+    </script>
+</head>
+<body>
+    <h1>PowerShell Executor</h1>
+    <textarea id="command" rows="10" cols="50" placeholder="Enter PowerShell command here..."></textarea><br>
+    <button id="execute-button">Execute Command</button>
+	<button id="submit-button">Submit Code</button>
+    <input type="text" id="test-file-name" placeholder="Enter test file name (e.g., array_plus_array_test.ps1)">
+    <button id="run-tests-button">Run Pester Tests</button>
+    <pre id="output" class="language-powershell"></pre>
+</body>
+</html>
